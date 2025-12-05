@@ -25,13 +25,14 @@ public class ArtistDao {
                 "ORDER BY name";
 
         try {
-            Connection connection = dataManager.getConnection();
+//            Connection connection = dataManager.getConnection();
 
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
+            try (Connection connection = dataManager.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
 
                 statement.setString(1, "%" + searchTerm + "%");
 
-                ResultSet results = statement.executeQuery();
+                try(ResultSet results = statement.executeQuery()) {
 
                 while (results.next()) {
                     int artistId = results.getInt("artist_id");
